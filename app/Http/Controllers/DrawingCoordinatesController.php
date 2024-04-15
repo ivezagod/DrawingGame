@@ -12,7 +12,7 @@ class DrawingCoordinatesController extends Controller
         $coordinates = $request->input('coordinates');
         $url = $request->input('url');
 
-        DrawingUpdated::dispatch($coordinates, $url);
+        broadcast(new DrawingUpdated($coordinates, $url))->toOthers();
 
         return response()->json(['message' => 'Drawing coordinates received and broadcasted successfully'], 200);
     }

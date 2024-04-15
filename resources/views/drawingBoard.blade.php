@@ -43,7 +43,7 @@
         <canvas id="drawing-board" class=" bg-white w-[1100px] relative "></canvas>
     </div>
 </section>
-<script src="/resources/js/app.js"></script>
+@vite(['resources/js/app.js'])
 </body>
 </html>
 

@@ -33,7 +33,9 @@ return [
             'port' => env('REVERB_SERVER_PORT', 8080),
             'hostname' => env('REVERB_HOST'),
             'options' => [
-                'tls' => [],
+                'tls' => [
+//                    'local_cert' => '/Users/vladimirlelicanin/.config/valet/Certificates/DrawingGame.test.key'
+                ],
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [

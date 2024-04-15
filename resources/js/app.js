@@ -13,6 +13,7 @@ const lineWidthValue = document.getElementById('lineWidthValue');
 const ctx = canvas.getContext('2d');
 const canvasRect = canvas.getBoundingClientRect();
 
+
 canvas.width = canvasRect.width;
 canvas.height = canvasRect.height;
 
@@ -80,7 +81,7 @@ canvas.addEventListener('mouseup', () => {
 canvas.addEventListener('mousemove', draw);
 
 const saveDrawingData = (url, data, lineWidth) => {
-    console.log('Saving drawing data for URL:', url);
+    // console.log('Saving drawing data for URL:', url);
     const existingData = loadDrawingData(url);
     const newData = { coordinates: [], lineWidth: lineWidth };
 
@@ -96,7 +97,7 @@ const saveDrawingData = (url, data, lineWidth) => {
 
 const loadDrawingData = (url) => {
     const data = localStorage.getItem(`drawingData_${url}`);
-    console.log('Loaded drawing data for URL:', url, data); // Debugging
+    // console.log('Loaded drawing data for URL:', url, data); // Debugging
     return data ? JSON.parse(data) : null;
 };
 
@@ -109,7 +110,7 @@ const redrawCanvas = (url) => {
 
         ctx.lineWidth = savedData.lineWidth;
         savedData.coordinates.forEach(({ x, y }) => {
-  
+
             ctx.lineTo(x, y);
             ctx.stroke();
         });
@@ -127,7 +128,7 @@ let currentUrl = window.location.href.split('/').pop();
 
 const sendDrawingCoordinates = async (currentUrl,coordinates) => {
     try {
-        await axios.post('/drawing-coordinates', {
+        await axios.post('/api/drawing-coordinates', {
             url: currentUrl,
             coordinates: coordinates
         });
@@ -138,18 +139,30 @@ const sendDrawingCoordinates = async (currentUrl,coordinates) => {
 
 Echo.channel(`drawing-channel.${currentUrl}`)
     .listen('\\App\\Events\\DrawingUpdated', (e) => {
-        console.log(e);
+        console.log(e.coordinates);
 
 
-        coordinates.push(e.coordinates)
+          // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        if (coordinates && Array.isArray(coordinates)) {
-            coordinates.forEach(({ x, y }) => {
-                draw({ clientX: x, clientY: y });
-            });
-        } else {
-            console.error('Invalid or missing coordinates property in the event object');
-        }
+
+       // ctx.lineWidth = savedData.lineWidth;
+        e.coordinates.forEach(({ x, y }) => {
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+
+
+      //  coordinates.push(e.coordinates)
+
+
+        // if (coordinates && Array.isArray(coordinates)) {
+        //     coordinates.forEach(({ x, y }) => {
+        //         draw({ clientX: x, clientY: y });
+        //     });
+        // } else {
+        //     console.error('Invalid or missing coordinates property in the event object');
+        // }
     });
 
 

@@ -19,4 +19,3 @@ Route::get('/drawing-board/{url}', [DrawingBoardController::class, 'show'])->nam
 
 Route::post('/save-canvas-image', [CanvasImageController::class,'save'])->name('canvas-image-save');
 
-Route::post('/drawing-coordinates', [DrawingCoordinatesController::class, 'store'])->name('drawing-coordinates.store');
