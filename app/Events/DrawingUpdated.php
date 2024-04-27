@@ -18,12 +18,17 @@ class DrawingUpdated implements ShouldBroadcast
 
     public $coordinates;
     public $url;
+    public $color;
+    public $lineWidth;
 
 
-    public function __construct($coordinates , $url)
+
+    public function __construct($coordinates , $url, $color,$lineWidth)
     {
      $this->coordinates = $coordinates;
      $this->url = $url;
+     $this->color = $color;
+     $this->lineWidth = $lineWidth;
     }
 
     public function broadcastOn()

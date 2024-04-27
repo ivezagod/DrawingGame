@@ -29,12 +29,10 @@ class DrawingBoardController extends Controller
             $url = Str::random(10);
         }
 
-
         $drawingBoard = new DrawingBoard();
         $drawingBoard->title = $request->title;
         $drawingBoard->url = $url;
         $drawingBoard->save();
-
 
         return redirect()->route('drawingBoard.show', ['url' => $url]);
     }

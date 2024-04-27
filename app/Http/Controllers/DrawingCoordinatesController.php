@@ -11,10 +11,13 @@ class DrawingCoordinatesController extends Controller
     {
         $coordinates = $request->input('coordinates');
         $url = $request->input('url');
+        $lineWidth = $request->input('lineWidth');
+        $color = $request->input('color');
 
-        DrawingUpdated::dispatch($coordinates, $url);
+        broadcast(new DrawingUpdated($coordinates, $url,$lineWidth, $color))->toOthers();
 
         return response()->json(['message' => 'Drawing coordinates received and broadcasted successfully'], 200);
     }
-}
 
+
+}

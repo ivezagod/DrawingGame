@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/drawingBoard.store', [DrawingBoardController::class, 'store'])->name('drawingBoard.store');
 
-Route::get('/login', [DrawingBoardController::class, 'create'])->name('login');
+Route::get('/', [DrawingBoardController::class, 'create'])->name('welcome');
 
 
 
@@ -17,6 +17,5 @@ Route::get('/drawing-board/{url}', [DrawingBoardController::class, 'show'])->nam
 
 
 
-Route::post('/save-canvas-image', [CanvasImageController::class,'save'])->name('canvas-image-save');
 
-Route::post('/drawing-coordinates', [DrawingCoordinatesController::class, 'store'])->name('drawing-coordinates.store');
+

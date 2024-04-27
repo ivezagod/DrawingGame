@@ -1,25 +1,29 @@
 import './bootstrap';
 import axios from 'axios';
+import colors from "tailwindcss/colors.js";
+
 
 const canvas = document.getElementById('drawing-board');
 const toolbar = document.getElementById('toolbar');
 const eraserButton = document.getElementById('eraser');
 const clearButton = document.getElementById('clear');
-const saveForm = document.getElementById('save-form');
-const canvasImageDataInput = document.getElementById('canvas-image-data');
 const lineWidthInput = document.getElementById('lineWidth');
 const lineWidthValue = document.getElementById('lineWidthValue');
 
 const ctx = canvas.getContext('2d');
 const canvasRect = canvas.getBoundingClientRect();
 
+
 canvas.width = canvasRect.width;
 canvas.height = canvasRect.height;
 
 let isPainting = false;
 let lineWidth = 5;
+let color = 0;
 let eraserMode = false;
 let coordinates = [];
+let currentPath = [];
+let paths = [];
 
 toolbar.addEventListener('click', e => {
     if (e.target.id === 'eraser') {
@@ -29,10 +33,11 @@ toolbar.addEventListener('click', e => {
             ctx.strokeStyle = '#ffffff';
         } else {
             eraserButton.classList.remove('active');
-            ctx.strokeStyle = document.getElementById('stroke').value;
+            ctx.strokeStyle = document.getElementById('stroke').value; // Restore previous color
         }
     }
 });
+
 
 toolbar.addEventListener('change', e => {
     if (e.target.id === 'stroke' && !eraserMode) {
@@ -44,6 +49,12 @@ lineWidthInput.addEventListener('input', (e) => {
     lineWidth = parseInt(e.target.value);
     lineWidthValue.textContent = lineWidth;
 });
+toolbar.addEventListener('change', e => {
+    if (e.target.id === 'stroke' && !eraserMode) {
+        ctx.strokeStyle = e.target.value;
+    }
+});
+
 
 const draw = (e) => {
     if (!isPainting) {
@@ -55,11 +66,15 @@ const draw = (e) => {
 
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
+    color = ctx.strokeStyle;
+
+
 
     ctx.lineTo(x, y);
     ctx.stroke();
 
     coordinates.push({ x, y });
+    currentPath.push({ x, y, color, lineWidth });
 
 };
 
@@ -72,108 +87,153 @@ canvas.addEventListener('mousedown', (e) => {
 canvas.addEventListener('mouseup', () => {
     isPainting = false;
     const url = window.location.href.split('/').pop();
-    sendDrawingCoordinates(url, coordinates);
-    saveDrawingData(url, coordinates, lineWidth);
+    sendDrawingCoordinates(url, coordinates, ctx.strokeStyle); // Pass current color
+    saveDrawingData(url, coordinates, lineWidth, ctx.strokeStyle);
     coordinates = [];
+
+    paths.push([...currentPath]);
+    saveDrawingData(url);
+    currentPath = [];
 });
+
+
 
 canvas.addEventListener('mousemove', draw);
 
-const saveDrawingData = (url, data, lineWidth) => {
-    console.log('Saving drawing data for URL:', url);
-    const existingData = loadDrawingData(url);
-    const newData = { coordinates: [], lineWidth: lineWidth };
-
-    if (existingData) {
-        newData.coordinates = [...existingData.coordinates, ...data];
-    } else {
-        newData.coordinates = data;
-    }
-
-    localStorage.setItem(`drawingData_${url}`, JSON.stringify(newData));
+const saveDrawingData = (url) => {
+    console.log("Saving data:", paths);
+    localStorage.setItem(`drawingData_${url}`, JSON.stringify(paths));
+    console.log(`Drawing data saved for URL: ${url}`, paths);
 };
-
 
 const loadDrawingData = (url) => {
     const data = localStorage.getItem(`drawingData_${url}`);
-    console.log('Loaded drawing data for URL:', url, data); // Debugging
-    return data ? JSON.parse(data) : null;
-};
-
-const redrawCanvas = (url) => {
-    const savedData = loadDrawingData(url);
-    if (savedData) {
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
-        ctx.lineWidth = savedData.lineWidth;
-        savedData.coordinates.forEach(({ x, y }) => {
-  
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        });
+    try {
+        return data ? JSON.parse(data) : [];
+    } catch (error) {
+        console.error('Error parsing drawing data:', error);
+        return [];
     }
 };
 
-window.addEventListener('load', () => {
-    // Extract the URL from the current page
-    const url = window.location.href.split('/').pop();
-    // Redraw the canvas with saved drawing data for the current URL
-    redrawCanvas(url);
-});
+
+const redrawCanvas = (url) => {
+    console.log('redrawing canvas')
+    const savedData = loadDrawingData(url);
+    paths = savedData;
+    if (savedData) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        savedData.forEach(path => {
+            console.log('loging path',path)
+            ctx.beginPath();
+            path.forEach(({ x, y, color, lineWidth }) => {
+
+
+                ctx.lineTo(x, y);
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = color;
+                ctx.stroke();
+
+            });
+            ctx.closePath();
+        });
+
+    }
+};
+
+
+
+
+
 
 let currentUrl = window.location.href.split('/').pop();
 
-const sendDrawingCoordinates = async (currentUrl,coordinates) => {
+window.addEventListener('load', () => {
+    redrawCanvas(currentUrl);
+});
+
+const sendDrawingCoordinates = async (currentUrl, coordinates, color) => {
     try {
-        await axios.post('/drawing-coordinates', {
+        await axios.post('/api/drawing-coordinates', {
             url: currentUrl,
-            coordinates: coordinates
+            coordinates: coordinates,
+            color: color,
+            lineWidth: lineWidth,
         });
     } catch (error) {
         console.error('Error sending drawing coordinates:', error);
     }
 };
 
+
 Echo.channel(`drawing-channel.${currentUrl}`)
     .listen('\\App\\Events\\DrawingUpdated', (e) => {
-        console.log(e);
+        console.log(e.coordinates);
 
+        if (e.coordinates.length === 0) {
 
-        coordinates.push(e.coordinates)
-
-        if (coordinates && Array.isArray(coordinates)) {
-            coordinates.forEach(({ x, y }) => {
-                draw({ clientX: x, clientY: y });
-            });
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         } else {
-            console.error('Invalid or missing coordinates property in the event object');
+            ctx.beginPath();
+
+
+            e.coordinates.forEach(({ x, y, color }) => {
+                ctx.lineTo(x, y);
+                ctx.lineWidth = e.color;
+                ctx.strokeStyle = e.lineWidth;
+                console.log(ctx.strokeStyle, e.color)
+                ctx.stroke();
+
+
+
+            });
+
+            ctx.closePath();
         }
     });
 
 
-saveForm.addEventListener('submit', (e) => {
-    e.preventDefault();
 
+
+
+
+const downloadImage = async () => {
     const imageDataURL = canvas.toDataURL();
-    canvasImageDataInput.value = imageDataURL;
+    try {
+        const response = await axios.post('/api/download-image', {
+            image: imageDataURL
+        });
 
-    saveForm.submit();
-});
+        const imageUrl = response.data.url;
+
+        // Download the image
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = 'drawing.png';
+        link.click();
+    } catch (error) {
+        console.error('Error downloading image:', error);
+    }
+};
+
+const downloadImageButton = document.getElementById('download-image-btn');
+
+if (downloadImageButton) {
+    downloadImageButton.addEventListener('click', downloadImage);
+}
+
 
 clearButton.addEventListener('click', () => {
     const url = window.location.href.split('/').pop();
-    // Clear the canvas and remove saved drawing data for the current URL
+
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
     localStorage.removeItem(`drawingData_${url}`);
+
+
+    sendDrawingCoordinates(url, [], null);
 });
-
-
-
-
-
-
-
-
 
