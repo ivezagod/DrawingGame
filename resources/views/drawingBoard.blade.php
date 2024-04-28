@@ -44,7 +44,7 @@
         </div>
 
         <div id="toolbar" class="bg-transparent border border-pink-600 items-center  text-center  lg:hidden rounded-md p-5 flex  flex-row lg:flex-col justify-between shadow-blue">
-            <div class="flex flex-col mx-10">
+            <div class="flex flex-col mr-10">
                 <label for="stroke" class="text-pink-600">Colour</label>
                 <input id="stroke" class="  bg-transparent" name='stroke' type="color">
                 <label for="lineWidth" class="text-pink-600">Line Width:</label>
@@ -63,7 +63,7 @@
             {{--                <input type="hidden" name="url" value="{{ $url }}">--}}
             {{--                <button type="submit" class="border border-green-500 text-green-500 rounded-md px-4 py-2 hover:bg-green-600 hover:text-white">Save image</button>--}}
             {{--            </form>--}}
-            <div class="flex flex-col mx-10">
+            <div class="flex flex-col ml-10">
                 <button id="download-image-btn" class="mt-2 border border-blue-500 text-blue-500 rounded-md  hover:bg-blue-600 hover:text-white">Download image</button>
 
                 <a href="{{route('welcome')}}" class="mt-4 text-pink-600 hover:underline">Go back</a>
