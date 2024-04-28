@@ -17,7 +17,7 @@
 <h2 class="text-center text-pink-600 font-bold text-5xl mt-[70px]  ">{{$title}}</h2>
     <section class="container items-center flex-col-reverse lg:flex-row flex mx-auto mt-[30px]  ">
 
-        <div id="toolbar" class="bg-transparent border border-pink-600 text-center lg:items-cente lg:justify-center  rounded-md p-5 flex flex-row lg:flex lg:flex-col float-left shadow-blue">
+        <div id="toolbar" class="bg-transparent border border-pink-600 text-center items-center lg:justify-center  rounded-md p-5 flex flex-row lg:flex lg:flex-col float-left shadow-blue">
             <h1 class="text-pink-600 hidden lg:block">DrawIt</h1>
             <div class="flex flex-col lg:mr-0 text-center mr-10">
                 <label for="stroke" class="text-pink-600">Colour</label>
