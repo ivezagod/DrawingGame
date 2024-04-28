@@ -16,7 +16,7 @@
     @vite('resources/js/app.js')
 
 </head>
-<body class="bg-bgImage4  backdrop-blur-sm   w-screen bg-black font-first">
+<body class="bg-bgImage4    w-screen bg-black font-first">
 
 <h2 class="text-center text-pink-600 font-bold text-5xl mt-[70px]  ">{{$title}}</h2>
     <section class="container items-center flex-col-reverse lg:flex-row flex mx-auto mt-[30px]  ">
