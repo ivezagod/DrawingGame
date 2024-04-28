@@ -15,18 +15,18 @@
 <body class="bg-bgImage4  backdrop-blur-sm  h-screen w-screen bg-black ">
 
 <h2 class="text-center text-pink-600 font-bold text-5xl mt-[70px]  ">{{$title}}</h2>
-    <section class="container items-center lg:items-start flex-col-reverse lg:flex-row flex mx-auto mt-[30px]  ">
+    <section class="container items-center flex-col-reverse lg:flex-row flex mx-auto mt-[30px]  ">
 
-        <div id="toolbar" class="bg-transparent border border-pink-600 text-center items-center  lg:block rounded-md p-5 flex flex-row lg:flex lg:flex-col float-left shadow-blue">
+        <div id="toolbar" class="bg-transparent border border-pink-600 text-center lg:items-cente lg:justify-center  rounded-md p-5 flex flex-row lg:flex lg:flex-col float-left shadow-blue">
             <h1 class="text-pink-600 hidden lg:block">DrawIt</h1>
-            <div class="flex flex-col mr-10">
+            <div class="flex flex-col lg:mr-0 text-center mr-10">
                 <label for="stroke" class="text-pink-600">Colour</label>
                 <input id="stroke" class="  bg-transparent" name='stroke' type="color">
                 <label for="lineWidth" class="text-pink-600">Line Width:</label>
                 <input id="lineWidth" name='lineWidth'class="range pr-6 accent-pink-600" type="range" min="1" max="100" value="5">
                 <span id="lineWidthValue" class="text-pink-600">5</span>
             </div>
-            <div class="flex flex-col mx-10">
+            <div class="flex flex-col lg:mx-0 mx-10">
                 <button id="eraser" class="toggle-btn bg-transparent border border-pink-600 text-pink-600 rounded-md eraser-button ">Eraser</button>
                 <button id="clear" class="mt-2 bg-transparent border border-pink-600 text-pink-600 rounded-md   px-4  hover:bg-pink-600 hover:text-white">Clear</button>
             </div>
@@ -37,7 +37,7 @@
 {{--                <input type="hidden" name="url" value="{{ $url }}">--}}
 {{--                <button type="submit" class="border border-green-500 text-green-500 rounded-md px-4 py-2 hover:bg-green-600 hover:text-white">Save image</button>--}}
 {{--            </form>--}}
-            <div class="flex flex-col ml-10">
+            <div class="flex flex-col lg:ml-0 ml-10">
                 <button id="download-image-btn" class="mt-2 border border-blue-500 text-blue-500 rounded-md px-4 py-2 hover:bg-blue-600 hover:text-white">Download image</button>
 
                 <a href="{{route('welcome')}}" class="mt-4 text-pink-600 hover:underline">Go back</a>
