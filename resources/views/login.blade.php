@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"  href="/images/pencil.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15+Charted&family=Jersey+25&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     @vite('resources/css/app.css')
 </head>
-<body class="bg-bgImage4 backdrop-blur-sm h-screen w-screen">
+<body class="bg-bgImage4 backdrop-blur-sm h-screen w-screen font-first">
 <div class="max-w-container mx-auto " >
-    <h1 class="text-center text-pink-600 py-[50px] text-4xl">
+    <h1 class="text-center text-pink-600 py-[50px] text-4xl font-bold" >
         Draw It
     </h1>
     <div class="max-w-[300px] mx-auto border border-pink-600 rounded-lg  ">
@@ -22,7 +25,7 @@
                 <input type="text" class="py-2 bg-transparent text-pink-600 active:border-pink border border-pink-600 rounded-md text-black pl-[10px] bg-none" name="title" id="title">
             </div>
 
-            <button type="submit" class="bg-transparent  rounded-md text-pink-600 border border-pink-600 py-2 px-4 mb-10">Make new board</button>
+            <button type="submit" class="bg-transparent hover:bg-pink-600 hover:text-black  rounded-md text-pink-600 border border-pink-600 py-2 px-4 mb-10">Make new board</button>
         </form>
     </div>
 </div>

@@ -7,12 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon"  href="/images/pencil.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15+Charted&family=Jersey+25&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
     <title>DrawIt-{{$url}}</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 
 </head>
-<body class="bg-bgImage4  backdrop-blur-sm  h-screen w-screen bg-black ">
+<body class="bg-bgImage4  backdrop-blur-sm  h-screen w-screen bg-black font-first">
 
 <h2 class="text-center text-pink-600 font-bold text-5xl mt-[70px]  ">{{$title}}</h2>
     <section class="container items-center flex-col-reverse lg:flex-row flex mx-auto mt-[30px]  ">
