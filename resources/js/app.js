@@ -101,9 +101,9 @@ canvas.addEventListener('mouseup', () => {
 canvas.addEventListener('mousemove', draw);
 
 const saveDrawingData = (url) => {
-    console.log("Saving data:", paths);
+
     localStorage.setItem(`drawingData_${url}`, JSON.stringify(paths));
-    console.log(`Drawing data saved for URL: ${url}`, paths);
+
 };
 
 const loadDrawingData = (url) => {
@@ -111,7 +111,7 @@ const loadDrawingData = (url) => {
     try {
         return data ? JSON.parse(data) : [];
     } catch (error) {
-        console.error('Error parsing drawing data:', error);
+
         return [];
     }
 };
@@ -182,7 +182,6 @@ Echo.channel(`drawing-channel.${currentUrl}`)
                 ctx.lineTo(x, y);
                 ctx.lineWidth = e.color;
                 ctx.strokeStyle = e.lineWidth;
-                console.log(ctx.strokeStyle, e.color)
                 ctx.stroke();
 
 
