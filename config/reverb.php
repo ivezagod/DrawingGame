@@ -31,12 +31,9 @@ return [
         'reverb' => [
             'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
             'port' => env('REVERB_SERVER_PORT', 8080),
-            'hostname' => env('REVERB_HOST'),
+            'hostname' => env('REVERB_HOST','drawit.cfd'),
             'options' => [
-                'tls' => env('REVERB_SCHEME', 'https') === 'https' ? [
-                    'local_cert' => '/path/to/fullchain.pem',  // SSL cert
-                    'local_pk' => '/path/to/privkey.pem',      // Private key
-                ] : [],
+                'tls' => [],
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [
