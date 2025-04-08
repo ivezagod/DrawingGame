@@ -33,7 +33,10 @@ return [
             'port' => env('REVERB_SERVER_PORT', 8080),
             'hostname' => env('REVERB_HOST'),
             'options' => [
-                'tls' => [],
+                'tls' => env('REVERB_SCHEME', 'https') === 'https' ? [
+                    'local_cert' => '/path/to/fullchain.pem',  // SSL cert
+                    'local_pk' => '/path/to/privkey.pem',      // Private key
+                ] : [],
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [
