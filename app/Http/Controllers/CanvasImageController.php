@@ -26,7 +26,7 @@ class CanvasImageController extends Controller
 
         Storage::disk('public')->put($filename, $imageData);
 
-     
+
         $imageUrl = Storage::disk('public')->url($filename);
 
         return response()->json(['url' => $imageUrl]);
