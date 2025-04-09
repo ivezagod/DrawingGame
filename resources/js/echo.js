@@ -6,8 +6,8 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'reverb',
     key: import.meta.env.VITE_REVERB_APP_KEY,
-    wsHost: window.location.hostname, // e.g., 'drawit.cfd'
-    wsPort: 80,                      // HTTP port
-    forceTLS: false,                  // Disable HTTPS
-    enabledTransports: ['ws'],        // Only use WS (no WSS fallback)
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
+    enabledTransports: ['ws', 'wss'],
 });
